@@ -13,8 +13,12 @@ int main() {
     bytecode = {
       OP::LOAD, 0,
       OP::DUP,
-      OP::SUB,
+      OP::LOAD, 1,
+      OP::ADD,
       OP::STORE, 0,
+      OP::POP,
+      OP::STORE, 1,
+      OP::STORE, 3,
       OP::POP,
       OP::STOP
     };
