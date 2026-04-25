@@ -12,18 +12,25 @@ int main() {
     using OP = compiler::Opcode;
     bytecode = {
       OP::LOAD, 0,
-      OP::LOAD, 1,
-      OP::ADD,
+      OP::DUP,
+      OP::SUB,
       OP::STORE, 0,
+      OP::POP,
       OP::STOP
     };
   }
-  // bytecode.push_back(compiler::Opcode::STOP);
 
   compiler::Compiler c;
-  c.ParseBytecode(bytecode);
+  if (!c.ParseBytecode(bytecode)) {
+    printf("error: could not compile bytecode\n");
+    return 1;
+  }
+
   c.PrintIR();
-  c.CompileIR();
+  if (!c.EmitObjectFile()) {
+    printf("error: could not generate object file\n");
+    return 1;
+  }
 
   return 0;
 }

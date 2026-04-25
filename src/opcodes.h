@@ -5,6 +5,8 @@
 
 namespace compiler {
 
+constexpr uint16_t kWordSize = 32;
+
 enum Opcode : uint8_t {
   STOP  = 0x00,
   LOAD  = 0x01,

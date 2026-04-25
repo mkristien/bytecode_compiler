@@ -26,18 +26,19 @@ int main(int const argc, char* const argv[])
         assert(in_size % 32 == 0);
         in_file.seekg(0, std::ios::beg);
         in.reset(new unsigned char[in_size]);
-        in_file.read(in.get(), in_size);
+        in_file.read(reinterpret_cast<char*>(in.get()), in_size);
         assert(in_file.gcount() == in_size);
     }
 
     out.reset(new unsigned char[out_size]);
     std::memset(out.get(), 0, out_size);
 
+    // printf("calling f(%p, %p)\n", in.get(), out.get());
     f(in.get(), out.get());
 
     {
         std::ofstream out_file(argv[2], std::ios::binary);
-        out_file.write(out.get(), out_size);
+        out_file.write(reinterpret_cast<char*>(out.get()), out_size);
     }
 
     return 0;

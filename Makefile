@@ -12,7 +12,7 @@ SRCS := $(patsubst %, src/%, $(SRCS))
 OBJS := $(patsubst %, bin/%, $(OBJS))
 DEPFLAGS = -MT $@ -MMD -MP -MF bin/$*.d
 
-program: wrapper.cpp generated.o
+program: wrapper.cpp runtime.cpp generated.o
 	$(CC) -o $@ $^ $(CC_OPT)
 
 compiler: $(OBJS)
