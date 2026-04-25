@@ -1,6 +1,7 @@
 
 #pragma once
 
+#include <memory>
 #include <cstdint>
 #include <vector>
 
@@ -17,12 +18,12 @@ class Compiler {
 
   void PrintIR() const;
 
-  void CompileIR() const;
+  bool CompileIR() const;
 
  private:
-  llvm::LLVMContext* ctx_;
-  llvm::Module*      mod_;
-  llvm::IRBuilder<>* builder_;
+  std::unique_ptr<llvm::LLVMContext> ctx_;
+  std::unique_ptr<llvm::Module>      mod_;
+  std::unique_ptr<llvm::IRBuilder<>> builder_;
 };
 
 }   // namespace compiler
