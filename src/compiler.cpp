@@ -131,7 +131,7 @@ bool Compiler::ParseBytecode(const std::vector<uint8_t>& bytecode) {
           printf("error: trying to sub must have stack size of at least 2\n");
           return compiled_success_;
         }
-        // call helper function
+        // call runtime function
         Function* callee = mod_->getFunction("sub");
         builder_->CreateCall(callee);
         stack_size--;
@@ -142,7 +142,7 @@ bool Compiler::ParseBytecode(const std::vector<uint8_t>& bytecode) {
           printf("error: trying to dub on an empty stack\n");
           return compiled_success_;
         }
-        // call helper function
+        // call runtime function
         Function* callee = mod_->getFunction("dup");
         builder_->CreateCall(callee);
         stack_size++;
