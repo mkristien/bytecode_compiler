@@ -18,12 +18,18 @@ class Compiler {
 
   void PrintIR() const;
 
-  bool CompileIR() const;
+  bool EmitObjectFile() const;
+
+ private:
+  // return EntryPoint function
+  llvm::Function* InitialiseFunctions();
 
  private:
   std::unique_ptr<llvm::LLVMContext> ctx_;
   std::unique_ptr<llvm::Module>      mod_;
   std::unique_ptr<llvm::IRBuilder<>> builder_;
+
+  bool compiled_success_;
 };
 
 }   // namespace compiler
