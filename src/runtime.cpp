@@ -1,8 +1,5 @@
-#include <stack>
+#include <cstddef>
 #include <cstdint>
-#include <cstring>
-#include <cstdio>
-#include <bit>
 
 extern "C" {
 
@@ -15,6 +12,8 @@ namespace {
 constexpr uint16_t kWordSize = 32;
 
 struct Word {
+  Word() = default;
+
   Word(const uint8_t* w) {
     // flip endianness
     for (int i = 0; i < kWordSize; i++) {
@@ -38,7 +37,45 @@ struct Word {
   }
 };
 
-std::stack<Word> s;
+class WordStack {
+ public:
+  ~WordStack() { delete[] storage_; }
+
+  void push(const uint8_t* w) {
+    ensure_capacity();
+    storage_[size_++] = Word(w);
+  }
+
+  void push(const Word& w) {
+    ensure_capacity();
+    storage_[size_++] = w;
+  }
+
+  Word& top() { return storage_[size_ - 1]; }
+
+  void pop() { --size_; }
+
+ private:
+  void ensure_capacity() {
+    if (size_ < capacity_) {
+      return;
+    }
+    size_t const new_cap = capacity_ == 0 ? 16 : capacity_ * 2;
+    Word* const new_storage = new Word[new_cap];
+    for (size_t i = 0; i < size_; ++i) {
+      new_storage[i] = storage_[i];
+    }
+    delete[] storage_;
+    storage_  = new_storage;
+    capacity_ = new_cap;
+  }
+
+  Word*    storage_  = nullptr;
+  size_t   size_     = 0;
+  size_t   capacity_ = 0;
+};
+
+WordStack s;
 
 /**
  * Add two Words in 32-bit chunks, from the least significant chunk.
